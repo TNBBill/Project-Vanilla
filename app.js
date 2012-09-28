@@ -7,7 +7,8 @@ var express = require('express')
   , app = express()
   , http = require('http')
   , path = require('path')
-  , server = require('http').createServer(app);
+  , server = require('http').createServer(app)
+  , mongoose = require('mongoose');
   //, io = require('socket.io').listen(server);
 
 
@@ -21,6 +22,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
+  mongoose.connect('mongodb://localhost/vanilla')
 });
 
 app.configure('development', function(){
@@ -28,6 +30,8 @@ app.configure('development', function(){
 });
 
 require('./controllers')(app)
+require('./controllers/product')(app)
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
