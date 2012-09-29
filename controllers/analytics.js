@@ -6,6 +6,9 @@ module.exports = function(app, socket){
 		new  Analytics({date: Analytics.currentDate()}).save();
 		res.send(true);
 	});
+	app.get('/dashboard', function(req, res){
+		res.render('analytics/dashboard', {title: 'Dashboard'});
+	});
 
 };
 

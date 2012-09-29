@@ -31,6 +31,7 @@ app.configure('development', function(){
 require('./controllers')(app)
 require('./controllers/product')(app, io)
 require('./controllers/analytics')(app, io)
+require('./controllers/cart')(app, io)
 
 
 server.listen(app.get('port'), function(){
@@ -39,16 +40,17 @@ server.listen(app.get('port'), function(){
 
 
 //Socket.io Stuffs
-var userCount = 0; 
+io.analyticData = {hoverCount: 0, productCount: 0, cartCount: 0, purchaseCount: 0, currentUsers: 0};
 io.sockets.on('connection', function (socket) {
-    userCount = userCount+1;
-    console.log('A socket connected!');
-    socket.broadcast.emit('userUpdate', { count: userCount });
-    socket.on('my other event', function (data) {
-      console.log(data);
+    io.analyticData.currentUsers++;
+    io.sockets.emit('analyticsUpdate', io.analyticData);
+    socket.on('analyticsHover', function (data) {
+      io.analyticData.hoverCount++;
+      io.sockets.emit('analyticsUpdate', io.analyticData);
     });
     socket.on('disconnect', function () {
-      userCount = userCount-1;
-      socket.broadcast.emit('userUpdate', { count: userCount });
+      io.analyticData.currentUsers--;
+      io.sockets.emit('analyticsUpdate', io.analyticData);
     });
 });
+

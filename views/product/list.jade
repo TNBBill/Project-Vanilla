@@ -3,4 +3,4 @@ extends ../layout
 block content
 	- for(var key in products)
 		h1=products[key].name
-		p=products[key]._id
+		a(href='/product/' + products[key]._id) View

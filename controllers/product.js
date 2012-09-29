@@ -11,17 +11,14 @@ module.exports = function(app, socket){
 
 	app.get('/product/:id', function(req, res){
 		Product.findOne({_id: req.params.id}, function(err, product){
-			Analytics.findOne({date: Analytics.currentDate()}, function(err, data){
-				data.productCount = data.productCount + 1;
-				data.save();
-				socket.sockets.emit('analyticsUpdate', data);
-
-			});
+			socket.analyticData.productCount++;
+			socket.sockets.emit('analyticsUpdate', socket.analyticData);
 			res.render('product/show', {product: product, title: 'Product Page'});
 			
 		});
 
 	});
+	
 };
 
 

@@ -4,6 +4,7 @@ var mongoose = require('mongoose')
 
 var analyticsSchema = new Schema({
 	date: {type: Date},
+	hoverCount: {type: Number, default: 0},
 	productCount: {type: Number, default: 0},
 	cartCount: {type: Number, default: 0},
 	purchaseCount: {type: Number, default: 0}

@@ -2,3 +2,5 @@ extends ../layout
 
 block content
 	h1=product.name
+	form(action='/user/cart', method='POST')
+		button Add to Cart
